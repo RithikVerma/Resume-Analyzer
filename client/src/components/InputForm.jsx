@@ -1,10 +1,15 @@
 import { useState, useRef } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
+import { Button } from './ui/button';
+import { Textarea } from './ui/textarea';
+import { TabsList, TabsTrigger, TabsContent, Tabs } from './ui/tabs';
+import { Upload, FileText } from 'lucide-react';
 
 export default function InputForm({ onAnalyze }) {
     const [resumeText, setResumeText] = useState('');
     const [jobDescription, setJobDescription] = useState('');
     const [resumeFile, setResumeFile] = useState(null);
-    const [inputMode, setInputMode] = useState('file'); // 'file' or 'text'
+    const [inputMode, setInputMode] = useState('file');
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef(null);
 
@@ -54,7 +59,6 @@ export default function InputForm({ onAnalyze }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate inputs based on mode
         if (inputMode === 'file') {
             if (!resumeFile) {
                 alert('Please upload a resume file.');
@@ -83,56 +87,45 @@ export default function InputForm({ onAnalyze }) {
     };
 
     return (
-        <section className="mb-12">
-            <form onSubmit={handleSubmit}>
-                {/* Input Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    {/* Resume Input */}
-                    <div className="glass-card p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-2 text-primary-light">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                    <polyline points="14 2 14 8 20 8" />
-                                    <line x1="16" y1="13" x2="8" y2="13" />
-                                    <line x1="16" y1="17" x2="8" y2="17" />
-                                    <polyline points="10 9 9 9 8 9" />
-                                </svg>
-                                <h2 className="text-xl font-heading font-semibold text-gray-100">Resume</h2>
-                            </div>
-
-                            {/* Toggle between file upload and text input */}
-                            <div className="flex gap-2">
-                                <button
-                                    type="button"
+        <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Resume Input */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <FileText className="h-5 w-5" />
+                            Resume
+                        </CardTitle>
+                        <CardDescription>
+                            Upload a file or paste text
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Tabs className="w-full">
+                            <TabsList className="mb-4 w-full">
+                                <TabsTrigger
+                                    active={inputMode === 'file'}
                                     onClick={() => setInputMode('file')}
-                                    className={`px-3 py-1 text-sm rounded transition-all ${inputMode === 'file'
-                                            ? 'bg-primary text-white'
-                                            : 'bg-bg-primary/50 text-gray-400 hover:text-gray-200'
-                                        }`}
+                                    className="flex-1"
                                 >
+                                    <Upload className="h-3.5 w-3.5 mr-1.5" />
                                     Upload
-                                </button>
-                                <button
-                                    type="button"
+                                </TabsTrigger>
+                                <TabsTrigger
+                                    active={inputMode === 'text'}
                                     onClick={() => setInputMode('text')}
-                                    className={`px-3 py-1 text-sm rounded transition-all ${inputMode === 'text'
-                                            ? 'bg-primary text-white'
-                                            : 'bg-bg-primary/50 text-gray-400 hover:text-gray-200'
-                                        }`}
+                                    className="flex-1"
                                 >
+                                    <FileText className="h-3.5 w-3.5 mr-1.5" />
                                     Paste Text
-                                </button>
-                            </div>
-                        </div>
+                                </TabsTrigger>
+                            </TabsList>
 
-                        {inputMode === 'file' ? (
-                            <>
-                                {/* File Upload Area */}
+                            {inputMode === 'file' ? (
                                 <div
-                                    className={`border-2 border-dashed rounded-lg p-6 text-center transition-all ${isDragging
-                                            ? 'border-primary bg-primary/10'
-                                            : 'border-white/10 hover:border-primary/50'
+                                    className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${isDragging
+                                            ? 'border-slate-400 bg-slate-50'
+                                            : 'border-slate-200 hover:border-slate-300'
                                         }`}
                                     onDragOver={handleDragOver}
                                     onDragLeave={handleDragLeave}
@@ -149,118 +142,83 @@ export default function InputForm({ onAnalyze }) {
 
                                     {resumeFile ? (
                                         <div className="space-y-3">
-                                            <div className="flex items-center justify-center gap-2 text-primary-light">
-                                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                                    <polyline points="14 2 14 8 20 8" />
-                                                </svg>
-                                            </div>
-                                            <p className="text-gray-100 font-medium">{resumeFile.name}</p>
-                                            <p className="text-sm text-gray-400">
+                                            <FileText className="h-12 w-12 mx-auto text-slate-400" />
+                                            <p className="text-sm font-medium text-slate-900">{resumeFile.name}</p>
+                                            <p className="text-xs text-slate-500">
                                                 {(resumeFile.size / 1024).toFixed(2)} KB
                                             </p>
-                                            <button
+                                            <Button
                                                 type="button"
+                                                variant="outline"
+                                                size="sm"
                                                 onClick={removeFile}
-                                                className="text-red-400 hover:text-red-300 text-sm underline"
                                             >
-                                                Remove file
-                                            </button>
+                                                Remove
+                                            </Button>
                                         </div>
                                     ) : (
                                         <div className="space-y-3">
-                                            <div className="flex items-center justify-center">
-                                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400">
-                                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                                    <polyline points="17 8 12 3 7 8" />
-                                                    <line x1="12" y1="3" x2="12" y2="15" />
-                                                </svg>
-                                            </div>
+                                            <Upload className="h-12 w-12 mx-auto text-slate-400" />
                                             <div>
                                                 <label
                                                     htmlFor="resume-file-input"
-                                                    className="text-primary-light hover:text-primary cursor-pointer font-medium"
+                                                    className="text-sm font-medium text-slate-900 hover:text-slate-700 cursor-pointer"
                                                 >
                                                     Click to upload
                                                 </label>
-                                                <span className="text-gray-400"> or drag and drop</span>
+                                                <span className="text-sm text-slate-500"> or drag and drop</span>
                                             </div>
-                                            <p className="text-sm text-gray-400">
+                                            <p className="text-xs text-slate-500">
                                                 PDF, DOC, or DOCX (max 5MB)
                                             </p>
                                         </div>
                                     )}
                                 </div>
-                            </>
-                        ) : (
-                            <>
-                                {/* Text Input */}
-                                <textarea
-                                    value={resumeText}
-                                    onChange={(e) => setResumeText(e.target.value)}
-                                    placeholder="Paste the candidate's resume here...
-
-Include:
-• Technical skills and tools
-• Work experience and projects
-• Education and certifications
-• Achievements and responsibilities"
-                                    className="w-full min-h-[300px] bg-bg-primary/50 border border-white/5 rounded-lg p-4 text-gray-100 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-y"
-                                    spellCheck="false"
-                                />
-                                <div className="mt-2 text-right text-sm text-gray-400">
-                                    <span className="text-primary-light font-medium">{resumeText.length}</span> characters
+                            ) : (
+                                <div>
+                                    <Textarea
+                                        value={resumeText}
+                                        onChange={(e) => setResumeText(e.target.value)}
+                                        placeholder="Paste resume text here..."
+                                        className="min-h-[280px] resize-none"
+                                    />
+                                    <div className="mt-2 text-right text-xs text-slate-500">
+                                        {resumeText.length} characters
+                                    </div>
                                 </div>
-                            </>
-                        )}
-                    </div>
+                            )}
+                        </Tabs>
+                    </CardContent>
+                </Card>
 
-                    {/* Job Description Input */}
-                    <div className="glass-card p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5">
-                        <div className="flex items-center gap-2 mb-4 text-primary-light">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                            </svg>
-                            <h2 className="text-xl font-heading font-semibold text-gray-100">Job Description</h2>
-                        </div>
-                        <textarea
+                {/* Job Description Input */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Job Description</CardTitle>
+                        <CardDescription>
+                            Paste the job description
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Textarea
                             value={jobDescription}
                             onChange={(e) => setJobDescription(e.target.value)}
-                            placeholder="Paste the job description here...
-
-Include:
-• Required skills and qualifications
-• Responsibilities and duties
-• Preferred experience level
-• Nice-to-have skills"
-                            className="w-full min-h-[300px] bg-bg-primary/50 border border-white/5 rounded-lg p-4 text-gray-100 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-y"
-                            spellCheck="false"
+                            placeholder="Paste job description here..."
+                            className="min-h-[280px] resize-none"
                         />
-                        <div className="mt-2 text-right text-sm text-gray-400">
-                            <span className="text-primary-light font-medium">{jobDescription.length}</span> characters
+                        <div className="mt-2 text-right text-xs text-slate-500">
+                            {jobDescription.length} characters
                         </div>
-                    </div>
-                </div>
+                    </CardContent>
+                </Card>
+            </div>
 
-                {/* Submit Button */}
-                <div className="text-center">
-                    <button
-                        type="submit"
-                        className="btn-primary inline-flex items-center gap-2"
-                    >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="animate-pulse">
-                            <circle cx="11" cy="11" r="8" />
-                            <path d="m21 21-4.35-4.35" />
-                            <path d="M11 8a3 3 0 0 0-3 3" />
-                        </svg>
-                        <span>Analyze Resume</span>
-                    </button>
-                    <p className="mt-4 text-gray-400 text-sm">
-                        Get instant AI-powered insights and recommendations
-                    </p>
-                </div>
-            </form>
-        </section>
+            {/* Submit Button */}
+            <div className="flex justify-center">
+                <Button type="submit" size="lg" className="w-full sm:w-auto">
+                    Analyze Resume
+                </Button>
+            </div>
+        </form>
     );
 }

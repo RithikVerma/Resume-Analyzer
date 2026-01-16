@@ -15,7 +15,6 @@ function App() {
     setIsLoading(true);
 
     try {
-      // Simulate delay for better UX (like original app)
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       const analysisResults = await analyzeResume(resumeData, jobDescription, inputMode);
@@ -24,7 +23,6 @@ function App() {
       setShowInput(false);
       setIsLoading(false);
 
-      // Scroll to top to show results
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       setIsLoading(false);
@@ -39,15 +37,10 @@ function App() {
   };
 
   return (
-    <>
-      {/* Background Gradient */}
-      <div className="gradient-bg"></div>
-
-      {/* Loading Overlay */}
+    <div className="min-h-screen bg-slate-50">
       <LoadingOverlay isLoading={isLoading} />
 
-      {/* Main Container */}
-      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+      <div className="minimal-container">
         <Header />
 
         {showInput && <InputForm onAnalyze={handleAnalyze} />}
@@ -59,7 +52,7 @@ function App() {
           />
         )}
       </div>
-    </>
+    </div>
   );
 }
 

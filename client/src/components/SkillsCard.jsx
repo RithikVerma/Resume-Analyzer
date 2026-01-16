@@ -1,31 +1,33 @@
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
+
 export default function SkillsCard({ title, skills, type, icon }) {
-    const tagClass = type === 'matched' ? 'skill-tag-matched' : 'skill-tag-missing';
+    const variant = type === 'matched' ? 'success' : 'warning';
 
     return (
-        <div className="glass-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-            {/* Header */}
-            <div className="flex items-center justify-between gap-2 mb-6 pb-4 border-b border-white/5">
-                <div className="flex items-center gap-2 text-primary-light">
-                    {icon}
-                    <h3 className="text-xl font-heading font-semibold text-gray-100">{title}</h3>
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                        {icon}
+                        {title}
+                    </span>
+                    <Badge variant="secondary">{skills.length}</Badge>
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="flex flex-wrap gap-2">
+                    {skills.length === 0 ? (
+                        <p className="text-slate-500 text-sm italic py-2">No {type} skills found</p>
+                    ) : (
+                        skills.map((skill, index) => (
+                            <Badge key={index} variant={variant}>
+                                {skill}
+                            </Badge>
+                        ))
+                    )}
                 </div>
-                <span className="bg-primary/20 text-primary-light px-3 py-1 rounded-lg text-sm font-semibold">
-                    {skills.length}
-                </span>
-            </div>
-
-            {/* Skills Tags */}
-            <div className="flex flex-wrap gap-2">
-                {skills.length === 0 ? (
-                    <p className="text-gray-400 italic py-4">No {type} skills found</p>
-                ) : (
-                    skills.map((skill, index) => (
-                        <span key={index} className={tagClass}>
-                            {skill}
-                        </span>
-                    ))
-                )}
-            </div>
-        </div>
+            </CardContent>
+        </Card>
     );
 }
