@@ -11,14 +11,14 @@ function App() {
   const [results, setResults] = useState(null);
   const [showInput, setShowInput] = useState(true);
 
-  const handleAnalyze = async (resumeText, jobDescription) => {
+  const handleAnalyze = async (resumeData, jobDescription, inputMode) => {
     setIsLoading(true);
 
     try {
       // Simulate delay for better UX (like original app)
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      const analysisResults = await analyzeResume(resumeText, jobDescription);
+      const analysisResults = await analyzeResume(resumeData, jobDescription, inputMode);
 
       setResults(analysisResults);
       setShowInput(false);

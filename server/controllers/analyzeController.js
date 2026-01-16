@@ -7,15 +7,22 @@ import {
     generateProjectRecommendations,
     generateSummary
 } from '../utils/recommendationEngine.js';
+import { parseFile } from '../utils/fileParser.js';
 
 export async function analyzeResume(req, res) {
     try {
-        const { resumeText, jobDescription } = req.body;
+        let resumeText = req.body.resumeText;
+        const { jobDescription } = req.body;
+
+        // If a file was uploaded, extract text from it (memory storage)
+        if (req.file) {
+            resumeText = await parseFile(req.file);
+        }
 
         // Validation
         if (!resumeText || !jobDescription) {
             return res.status(400).json({
-                error: 'Both resumeText and jobDescription are required'
+                error: 'Both resume and job description are required'
             });
         }
 
