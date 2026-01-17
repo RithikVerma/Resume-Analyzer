@@ -1,178 +1,81 @@
-# AI Resume Analyzer - React + Tailwind + Node.js
+# AI Resume Analyzer - Full Stack
 
-Modern full-stack AI Resume Analyzer built with React, Tailwind CSS, and Node.js/Express.
+Modern AI-powered resume analyzer built with React, Tailwind CSS, and Node.js. Optimized for Vercel deployment with serverless functions.
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 **Frontend:**
-- React 18
-- Vite (Fast build tool)
+- React 19 + Vite
 - Tailwind CSS (Utility-first styling)
 - Axios (API requests)
+- Lucide React (Icons)
 
 **Backend:**
-- Node.js
-- Express (Web framework)
-- CORS (Cross-origin support)
+- Node.js / Express (for local development)
+- Vercel Serverless Functions (for production)
+- PDF-Parse / Mammoth (File parsing)
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 AI-Resume-Analyzer/
-├── client/                 # React Frontend
+├── api/                    # ✨ Vercel Serverless Functions (Production API)
+│   ├── analyze.js         # Analysis entry point
+│   └── utils/             # Analysis logic & utilities
+├── client/                 # 💻 React Frontend
 │   ├── src/
-│   │   ├── components/    # React components
-│   │   ├── utils/         # API utilities
-│   │   ├── App.jsx        # Main app component
-│   │   └── index.css      # Tailwind styles
+│   │   ├── components/    # UI Components (shadcn/ui style)
+│   │   ├── utils/         # API & logic helpers
+│   │   └── App.jsx        # Main application
 │   └── package.json
-│
-├── server/                 # Node.js Backend
+├── server/                 # ⚙️ Node.js Backend (Local Dev Server)
 │   ├── controllers/       # Request handlers
-│   ├── routes/            # API routes
-│   ├── utils/             # Analysis logic
-│   ├── server.js          # Express server
+│   ├── server.js          # Express entry point
 │   └── package.json
-│
-├── index.html             # Vanilla version (legacy)
-├── script.js              # Vanilla version (legacy)
-└── styles.css             # Vanilla version (legacy)
+├── vercel.json             # Vercel deployment configuration
+└── package.json            # Root configuration & scripts
 ```
 
-## Getting Started
+## 💻 Local Development
 
-### Prerequisites
-- Node.js (v16 or higher)
-- npm
+1. **Install Dependencies**
+   ```bash
+   # In root directory
+   npm install
+   # In client directory
+   cd client && npm install
+   # In server directory
+   cd ../server && npm install
+   ```
 
-### Installation
+2. **Run Local Servers** (Open two terminals)
 
-1. **Install Frontend Dependencies**
-```bash
-cd client
-npm install
-```
+   **Terminal 1 (Backend):**
+   ```bash
+   cd server
+   npm run dev
+   ```
 
-2. **Install Backend Dependencies**
-```bash
-cd server
-npm install
-```
+   **Terminal 2 (Frontend):**
+   ```bash
+   cd client
+   npm run dev
+   ```
 
-### Running the Application
+## ✨ Key Features
 
-You need to run both the frontend and backend servers:
+- **File Support**: Analyze PDF, DOC, and DOCX resumes
+- **Real-time Analysis**: Instant feedback on resume-job alignment
+- **Skill Extraction**: Automatic identification of technical skills
+- **Match Scoring**: Multi-factor scoring algorithm
+- **Experience Detection**: Seniority level estimation
+- **Project Recommendations**: Targeted suggestions based on skill gaps
+- **Modern UI**: Dark-themed, responsive design with glassmorphism
 
-**Terminal 1 - Start Backend Server:**
-```bash
-cd server
-npm run dev
-```
-Backend runs on: http://localhost:5000
-
-**Terminal 2 - Start Frontend Dev Server:**
-```bash
-cd client
-npm run dev
-```
-Frontend runs on: http://localhost:5173
-
-### Open your browser and navigate to:
-```
-http://localhost:5173
-```
-
-## Features
-
--  **Modern UI**: Premium dark theme with glassmorphism effects
--  **Real-time Analysis**: Backend API processes resumes intelligently
--  **Skill Extraction**: Identifies 100+ technical skills
--  **Match Scoring**: Realistic algorithm with multi-factor weighting
--  **Experience Detection**: Auto-detects candidate seniority level
--  **Gap Analysis**: Highlights missing skills
--  **Smart Recommendations**: Generates targeted project suggestions
--  **Responsive Design**: Works on all devices
--  **Smooth Animations**: Professional micro-interactions
-
-## API Endpoints
-
-### POST /api/analyze
-Analyzes a resume against a job description.
-
-**Request Body:**
-```json
-{
-  "resumeText": "string",
-  "jobDescription": "string"
-}
-```
-
-**Response:**
-```json
-{
-  "candidate_level": "Mid",
-  "match_score": 75,
-  "matched_skills": ["React", "Node.js", "Python"],
-  "missing_skills": ["Kubernetes", "AWS"],
-  "resume_strengths": ["..."],
-  "resume_improvements": ["..."],
-  "project_recommendations": [{...}],
-  "overall_summary": "..."
-}
-```
-
-## Customization
-
-### Tailwind Configuration
-Edit `client/tailwind.config.js` to customize colors, fonts, and theme.
-
-### API URL
-Update `client/src/utils/api.js` to change backend URL for production deployment.
-
-## Building for Production
-
-### Frontend
-```bash
-cd client
-npm run build
-```
-Output: `client/dist/` - Deploy to any static host (Netlify, Vercel, etc.)
-
-### Backend
-```bash
-cd server
-npm start
-```
-Deploy to Node.js hosting (Heroku, Railway, Render, etc.)
-
-## Tech Stack Benefits
-
-This modern stack provides:
-- Component-based architecture for better code organization
-- Utility-first styling with Tailwind CSS
-- Type-safe API communication
-- Fast development with Vite HMR
-- Backend API separation (ready for AI integration)
-- Production-ready deployment structure
-
-## Deployment
-
-### Frontend (Static Hosting)
-- Netlify
-- Vercel
-- GitHub Pages
-- Cloudflare Pages
-
-### Backend (Node.js Hosting)
-- Heroku
-- Railway
-- Render
-- AWS/GCP/Azure
-
-## License
+## 📝 License
 
 MIT
 
-## Author
+## 👨‍💻 Created By
 
-Built with ❤️ using React + Tailwind CSS + Node.js
+Built with ❤️ by Aniket Verma
