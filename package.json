@@ -1,0 +1,19 @@
+{
+    "name": "ai-resume-analyzer",
+    "version": "1.0.0",
+    "description": "AI-powered resume analyzer with file upload support",
+    "scripts": {
+        "install-all": "npm install && cd client && npm install && cd ../server && npm install",
+        "dev:server": "cd server && npm run dev",
+        "dev:client": "cd client && npm run dev",
+        "build": "cd client && npm run build",
+        "vercel-build": "cd client && npm install && npm run build"
+    },
+    "keywords": [
+        "resume",
+        "analyzer",
+        "ai"
+    ],
+    "author": "",
+    "license": "ISC"
+}
