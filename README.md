@@ -78,4 +78,4 @@ MIT
 
 ## 👨‍💻 Created By
 
-Built with ❤️ by Aniket Verma
+Built with ❤️ by Rithik Verma
