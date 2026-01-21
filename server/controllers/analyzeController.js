@@ -76,6 +76,11 @@ export async function analyzeResume(req, res) {
 
     } catch (error) {
         console.error('Analysis error:', error);
-        res.status(500).json({ error: 'Failed to analyze resume' });
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+        res.status(500).json({
+            error: 'Failed to analyze resume',
+            details: error.message
+        });
     }
 }
