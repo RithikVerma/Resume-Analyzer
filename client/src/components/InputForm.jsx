@@ -77,9 +77,9 @@ export default function InputForm({ onAnalyze }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card>
+        <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <Card className="shadow-card border-slate-200">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <FileText className="h-5 w-5" />
@@ -91,9 +91,9 @@ export default function InputForm({ onAnalyze }) {
                     </CardHeader>
                     <CardContent>
                         <div
-                            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${isDragging
-                                ? 'border-slate-400 bg-slate-50'
-                                : 'border-slate-200 hover:border-slate-300'
+                            className={`border-2 rounded-xl p-10 text-center transition-smooth ${isDragging
+                                ? 'border-blue-400 bg-blue-50 border-solid'
+                                : 'border-dashed border-slate-300 hover:border-blue-400 hover:bg-slate-50'
                                 }`}
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}
@@ -109,10 +109,12 @@ export default function InputForm({ onAnalyze }) {
                             />
 
                             {resumeFile ? (
-                                <div className="space-y-3">
-                                    <FileText className="h-12 w-12 mx-auto text-slate-400" />
-                                    <p className="text-sm font-medium text-slate-900">{resumeFile.name}</p>
-                                    <p className="text-xs text-slate-500">
+                                <div className="space-y-4">
+                                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mx-auto">
+                                        <FileText className="h-8 w-8 text-blue-600" />
+                                    </div>
+                                    <p className="text-base font-semibold text-slate-900">{resumeFile.name}</p>
+                                    <p className="text-sm text-slate-600">
                                         {(resumeFile.size / 1024).toFixed(2)} KB
                                     </p>
                                     <Button
@@ -120,23 +122,24 @@ export default function InputForm({ onAnalyze }) {
                                         variant="outline"
                                         size="sm"
                                         onClick={removeFile}
+                                        className="transition-smooth"
                                     >
                                         Remove
                                     </Button>
                                 </div>
                             ) : (
-                                <div className="space-y-3">
-                                    <Upload className="h-12 w-12 mx-auto text-slate-400" />
-                                    <div>
+                                <div className="space-y-4">
+                                    <Upload className="h-14 w-14 mx-auto text-blue-500" />
+                                    <div className="space-y-1">
                                         <label
                                             htmlFor="resume-file-input"
-                                            className="text-sm font-medium text-slate-900 hover:text-slate-700 cursor-pointer"
+                                            className="text-base font-semibold text-blue-600 hover:text-blue-700 cursor-pointer transition-smooth"
                                         >
                                             Click to upload
                                         </label>
-                                        <span className="text-sm text-slate-500"> or drag and drop</span>
+                                        <p className="text-sm text-slate-600">or drag and drop</p>
                                     </div>
-                                    <p className="text-xs text-slate-500">
+                                    <p className="text-sm text-slate-500">
                                         PDF, DOC, or DOCX (max 5MB)
                                     </p>
                                 </div>
@@ -145,7 +148,7 @@ export default function InputForm({ onAnalyze }) {
                     </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="shadow-card border-slate-200">
                     <CardHeader>
                         <CardTitle>Job Description</CardTitle>
                         <CardDescription>
@@ -166,8 +169,8 @@ export default function InputForm({ onAnalyze }) {
                 </Card>
             </div>
 
-            <div className="flex justify-center">
-                <Button type="submit" size="lg" className="w-full sm:w-auto">
+            <div className="flex justify-center pt-4">
+                <Button type="submit" size="lg" className="w-full sm:w-auto text-lg px-12 py-6 shadow-lg hover:shadow-xl transition-smooth">
                     Analyze Resume
                 </Button>
             </div>

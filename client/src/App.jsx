@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Header from './components/Header';
+import Footer from './components/Footer';
+import LandingPage from './components/LandingPage';
 import InputForm from './components/InputForm';
 import LoadingOverlay from './components/LoadingOverlay';
 import ResultsDashboard from './components/ResultsDashboard';
@@ -9,7 +11,14 @@ import './index.css';
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState(null);
-  const [showInput, setShowInput] = useState(true);
+  const [showLanding, setShowLanding] = useState(true);
+  const [showInput, setShowInput] = useState(false);
+
+  const handleGetStarted = () => {
+    setShowLanding(false);
+    setShowInput(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleAnalyze = async (resumeFile, jobDescription) => {
     setIsLoading(true);
@@ -32,6 +41,7 @@ function App() {
 
   const handleAnalyzeAgain = () => {
     setResults(null);
+    setShowLanding(false);
     setShowInput(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -40,8 +50,13 @@ function App() {
     <div className="min-h-screen bg-slate-50">
       <LoadingOverlay isLoading={isLoading} />
 
+      <Header
+        onGetStarted={handleGetStarted}
+        showLanding={showLanding}
+      />
+
       <div className="minimal-container">
-        <Header />
+        {showLanding && <LandingPage onGetStarted={handleGetStarted} />}
 
         {showInput && <InputForm onAnalyze={handleAnalyze} />}
 
@@ -52,6 +67,8 @@ function App() {
           />
         )}
       </div>
+
+      {showLanding && <Footer />}
     </div>
   );
 }
