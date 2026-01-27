@@ -1,20 +1,19 @@
 import path from 'path';
 import mammoth from 'mammoth';
 import { promises as fs } from 'fs';
-import { PDFExtract } from 'pdf.js-extract';
+import { createRequire } from 'module';
 
-const pdfExtract = new PDFExtract();
+const require = createRequire(import.meta.url);
+const pdfParse = require('pdf-parse');
 
 /**
- * Extract text from PDF buffer using pdf.js-extract
+ * Extract text from PDF buffer using pdf-parse
  */
 async function parsePDF(filePath) {
     try {
-        const data = await pdfExtract.extract(filePath);
-        const text = data.pages.map(page =>
-            page.content.map(item => item.str).join(' ')
-        ).join('\n');
-        return text;
+        const buffer = await fs.readFile(filePath);
+        const data = await pdfParse(buffer);
+        return data.text;
     } catch (error) {
         console.error('Error parsing PDF:', error);
         throw new Error('Failed to parse PDF file: ' + error.message);
