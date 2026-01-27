@@ -2,14 +2,11 @@ import { useState, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
-import { TabsList, TabsTrigger, TabsContent, Tabs } from './ui/tabs';
 import { Upload, FileText } from 'lucide-react';
 
 export default function InputForm({ onAnalyze }) {
-    const [resumeText, setResumeText] = useState('');
     const [jobDescription, setJobDescription] = useState('');
     const [resumeFile, setResumeFile] = useState(null);
-    const [inputMode, setInputMode] = useState('file');
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef(null);
 
@@ -59,16 +56,9 @@ export default function InputForm({ onAnalyze }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (inputMode === 'file') {
-            if (!resumeFile) {
-                alert('Please upload a resume file.');
-                return;
-            }
-        } else {
-            if (!resumeText.trim()) {
-                alert('Please provide resume text.');
-                return;
-            }
+        if (!resumeFile) {
+            alert('Please upload a resume file.');
+            return;
         }
 
         if (!jobDescription.trim()) {
@@ -76,7 +66,7 @@ export default function InputForm({ onAnalyze }) {
             return;
         }
 
-        onAnalyze(inputMode === 'file' ? resumeFile : resumeText, jobDescription, inputMode);
+        onAnalyze(resumeFile, jobDescription);
     };
 
     const removeFile = () => {
@@ -89,7 +79,7 @@ export default function InputForm({ onAnalyze }) {
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Resume Input */}
+                {/* Resume Upload */}
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
@@ -97,97 +87,62 @@ export default function InputForm({ onAnalyze }) {
                             Resume
                         </CardTitle>
                         <CardDescription>
-                            Upload a file or paste text
+                            Upload your resume file (PDF, DOC, or DOCX)
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Tabs className="w-full">
-                            <TabsList className="mb-4 w-full">
-                                <TabsTrigger
-                                    active={inputMode === 'file'}
-                                    onClick={() => setInputMode('file')}
-                                    className="flex-1"
-                                >
-                                    <Upload className="h-3.5 w-3.5 mr-1.5" />
-                                    Upload
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    active={inputMode === 'text'}
-                                    onClick={() => setInputMode('text')}
-                                    className="flex-1"
-                                >
-                                    <FileText className="h-3.5 w-3.5 mr-1.5" />
-                                    Paste Text
-                                </TabsTrigger>
-                            </TabsList>
+                        <div
+                            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${isDragging
+                                ? 'border-slate-400 bg-slate-50'
+                                : 'border-slate-200 hover:border-slate-300'
+                                }`}
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
+                            onDrop={handleDrop}
+                        >
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                onChange={handleFileChange}
+                                accept=".pdf,.doc,.docx"
+                                className="hidden"
+                                id="resume-file-input"
+                            />
 
-                            {inputMode === 'file' ? (
-                                <div
-                                    className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${isDragging
-                                            ? 'border-slate-400 bg-slate-50'
-                                            : 'border-slate-200 hover:border-slate-300'
-                                        }`}
-                                    onDragOver={handleDragOver}
-                                    onDragLeave={handleDragLeave}
-                                    onDrop={handleDrop}
-                                >
-                                    <input
-                                        type="file"
-                                        ref={fileInputRef}
-                                        onChange={handleFileChange}
-                                        accept=".pdf,.doc,.docx"
-                                        className="hidden"
-                                        id="resume-file-input"
-                                    />
-
-                                    {resumeFile ? (
-                                        <div className="space-y-3">
-                                            <FileText className="h-12 w-12 mx-auto text-slate-400" />
-                                            <p className="text-sm font-medium text-slate-900">{resumeFile.name}</p>
-                                            <p className="text-xs text-slate-500">
-                                                {(resumeFile.size / 1024).toFixed(2)} KB
-                                            </p>
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={removeFile}
-                                            >
-                                                Remove
-                                            </Button>
-                                        </div>
-                                    ) : (
-                                        <div className="space-y-3">
-                                            <Upload className="h-12 w-12 mx-auto text-slate-400" />
-                                            <div>
-                                                <label
-                                                    htmlFor="resume-file-input"
-                                                    className="text-sm font-medium text-slate-900 hover:text-slate-700 cursor-pointer"
-                                                >
-                                                    Click to upload
-                                                </label>
-                                                <span className="text-sm text-slate-500"> or drag and drop</span>
-                                            </div>
-                                            <p className="text-xs text-slate-500">
-                                                PDF, DOC, or DOCX (max 5MB)
-                                            </p>
-                                        </div>
-                                    )}
+                            {resumeFile ? (
+                                <div className="space-y-3">
+                                    <FileText className="h-12 w-12 mx-auto text-slate-400" />
+                                    <p className="text-sm font-medium text-slate-900">{resumeFile.name}</p>
+                                    <p className="text-xs text-slate-500">
+                                        {(resumeFile.size / 1024).toFixed(2)} KB
+                                    </p>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={removeFile}
+                                    >
+                                        Remove
+                                    </Button>
                                 </div>
                             ) : (
-                                <div>
-                                    <Textarea
-                                        value={resumeText}
-                                        onChange={(e) => setResumeText(e.target.value)}
-                                        placeholder="Paste resume text here..."
-                                        className="min-h-[280px] resize-none"
-                                    />
-                                    <div className="mt-2 text-right text-xs text-slate-500">
-                                        {resumeText.length} characters
+                                <div className="space-y-3">
+                                    <Upload className="h-12 w-12 mx-auto text-slate-400" />
+                                    <div>
+                                        <label
+                                            htmlFor="resume-file-input"
+                                            className="text-sm font-medium text-slate-900 hover:text-slate-700 cursor-pointer"
+                                        >
+                                            Click to upload
+                                        </label>
+                                        <span className="text-sm text-slate-500"> or drag and drop</span>
                                     </div>
+                                    <p className="text-xs text-slate-500">
+                                        PDF, DOC, or DOCX (max 5MB)
+                                    </p>
                                 </div>
                             )}
-                        </Tabs>
+                        </div>
                     </CardContent>
                 </Card>
 

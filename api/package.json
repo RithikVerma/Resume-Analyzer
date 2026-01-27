@@ -1,8 +1,8 @@
 {
     "type": "module",
     "dependencies": {
-        "multiparty": "^4.2.3",
-        "mammoth": "^1.11.0",
-        "pdf-parse": "^2.4.5"
+        "formidable": "^3.5.1",
+        "pdf.js-extract": "^0.2.1",
+        "mammoth": "^1.11.0"
     }
 }

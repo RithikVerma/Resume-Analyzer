@@ -1,4 +1,4 @@
-import multiparty from 'multiparty';
+import { IncomingForm } from 'formidable';
 import { extractSkills } from './utils/skillExtractor.js';
 import { detectCandidateLevel } from './utils/levelDetector.js';
 import { calculateMatchScore } from './utils/scoreCalculator.js';
@@ -10,10 +10,13 @@ import {
 } from './utils/recommendationEngine.js';
 import { parseFile } from './utils/fileParser.js';
 
-/**
- * Vercel Serverless Function for Resume Analysis
- * Handles both file uploads and text-based resume analysis
- */
+// Disable body parsing
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
+
 export default async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -36,63 +39,39 @@ export default async function handler(req, res) {
     }
 
     try {
-        let resumeText = '';
-        let jobDescription = '';
+        const form = new IncomingForm({
+            uploadDir: '/tmp',
+            keepExtensions: true,
+            maxFileSize: 10 * 1024 * 1024, // 10MB
+        });
 
-        // Detect if it's a multipart form (file upload) or JSON
-        const contentType = req.headers['content-type'] || '';
+        const { fields, files } = await new Promise((resolve, reject) => {
+            form.parse(req, (err, fields, files) => {
+                if (err) reject(err);
+                else resolve({ fields, files });
+            });
+        });
 
-        if (contentType.includes('multipart/form-data')) {
-            // Handle file upload using multiparty
-            const form = new multiparty.Form();
+        // Extract data
+        const jobDescription = Array.isArray(fields.jobDescription)
+            ? fields.jobDescription[0]
+            : fields.jobDescription;
 
-            const parseFormData = () => {
-                return new Promise((resolve, reject) => {
-                    form.parse(req, async (err, fields, files) => {
-                        if (err) {
-                            reject(err);
-                            return;
-                        }
-                        resolve({ fields, files });
-                    });
-                });
-            };
-
-            const { fields, files } = await parseFormData();
-
-            // Extract job description from fields
-            jobDescription = fields.jobDescription ? fields.jobDescription[0] : '';
-
-            // Process uploaded file if exists
-            if (files.resume && files.resume[0]) {
-                const file = files.resume[0];
-
-                // Read file buffer
-                const fs = await import('fs/promises');
-                const buffer = await fs.readFile(file.path);
-
-                // Create file object similar to multer format
-                const fileObj = {
-                    originalname: file.originalFilename,
-                    buffer: buffer
-                };
-
-                resumeText = await parseFile(fileObj);
-
-                // Clean up temp file
-                await fs.unlink(file.path);
-            }
-        } else {
-            // Handle JSON request body
-            const body = req.body;
-            resumeText = body.resumeText || '';
-            jobDescription = body.jobDescription || '';
+        if (!files.resume || !jobDescription) {
+            return res.status(400).json({
+                error: 'Both resume file and job description are required'
+            });
         }
 
-        // Validation
-        if (!resumeText || !jobDescription) {
+        // Get the file (formidable v3 structure)
+        const resumeFile = Array.isArray(files.resume) ? files.resume[0] : files.resume;
+
+        // Parse the file
+        const resumeText = await parseFile(resumeFile);
+
+        if (!resumeText || resumeText.trim().length === 0) {
             return res.status(400).json({
-                error: 'Both resume and job description are required'
+                error: 'Could not extract text from resume file'
             });
         }
 
@@ -148,7 +127,7 @@ export default async function handler(req, res) {
         console.error('Analysis error:', error);
         res.status(500).json({
             error: 'Failed to analyze resume',
-            details: error.message
+            details: error.message || String(error)
         });
     }
 }

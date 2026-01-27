@@ -11,13 +11,13 @@ function App() {
   const [results, setResults] = useState(null);
   const [showInput, setShowInput] = useState(true);
 
-  const handleAnalyze = async (resumeData, jobDescription, inputMode) => {
+  const handleAnalyze = async (resumeFile, jobDescription) => {
     setIsLoading(true);
 
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      const analysisResults = await analyzeResume(resumeData, jobDescription, inputMode);
+      const analysisResults = await analyzeResume(resumeFile, jobDescription);
 
       setResults(analysisResults);
       setShowInput(false);
@@ -26,7 +26,7 @@ function App() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       setIsLoading(false);
-      alert('Error: ' + error.message);
+      alert('Error analyzing resume: ' + error.message);
     }
   };
 
