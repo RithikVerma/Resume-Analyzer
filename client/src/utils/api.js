@@ -4,7 +4,6 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 export async function analyzeResume(resumeFile, jobDescription) {
     try {
-        // Create FormData for file upload
         const formData = new FormData();
         formData.append('resume', resumeFile);
         formData.append('jobDescription', jobDescription);

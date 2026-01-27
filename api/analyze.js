@@ -10,7 +10,6 @@ import {
 } from './utils/recommendationEngine.js';
 import { parseFile } from './utils/fileParser.js';
 
-// Disable body parsing
 export const config = {
     api: {
         bodyParser: false,
@@ -18,7 +17,6 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-    // Set CORS headers
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -27,13 +25,11 @@ export default async function handler(req, res) {
         'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
     );
 
-    // Handle preflight request
     if (req.method === 'OPTIONS') {
         res.status(200).end();
         return;
     }
 
-    // Only allow POST requests
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -42,7 +38,7 @@ export default async function handler(req, res) {
         const form = new IncomingForm({
             uploadDir: '/tmp',
             keepExtensions: true,
-            maxFileSize: 10 * 1024 * 1024, // 10MB
+            maxFileSize: 10 * 1024 * 1024,
         });
 
         const { fields, files } = await new Promise((resolve, reject) => {
@@ -52,7 +48,6 @@ export default async function handler(req, res) {
             });
         });
 
-        // Extract data
         const jobDescription = Array.isArray(fields.jobDescription)
             ? fields.jobDescription[0]
             : fields.jobDescription;
@@ -63,10 +58,8 @@ export default async function handler(req, res) {
             });
         }
 
-        // Get the file (formidable v3 structure)
         const resumeFile = Array.isArray(files.resume) ? files.resume[0] : files.resume;
 
-        // Parse the file
         const resumeText = await parseFile(resumeFile);
 
         if (!resumeText || resumeText.trim().length === 0) {
@@ -75,11 +68,9 @@ export default async function handler(req, res) {
             });
         }
 
-        // Extract skills from both texts
         const resumeSkills = extractSkills(resumeText);
         const jobSkills = extractSkills(jobDescription);
 
-        // Find matched and missing skills
         const matched = resumeSkills.filter(skill =>
             jobSkills.some(jobSkill =>
                 jobSkill.toLowerCase() === skill.toLowerCase()
@@ -90,12 +81,10 @@ export default async function handler(req, res) {
             !resumeSkills.some(resumeSkill =>
                 resumeSkill.toLowerCase() === skill.toLowerCase()
             )
-        ).slice(0, 15); // Limit to top 15 missing skills
+        ).slice(0, 15);
 
-        // Detect candidate level
         const candidateLevel = detectCandidateLevel(resumeText);
 
-        // Calculate match score
         const matchScore = calculateMatchScore(
             matched.length,
             jobSkills.length,
@@ -103,17 +92,15 @@ export default async function handler(req, res) {
             jobDescription
         );
 
-        // Generate feedback
         const strengths = generateStrengths(resumeText, matched);
         const improvements = generateImprovements(missing, candidateLevel);
         const projects = generateProjectRecommendations(missing, candidateLevel);
         const summary = generateSummary(matchScore, candidateLevel, matched.length, missing.length);
 
-        // Return analysis results
         const result = {
             candidate_level: candidateLevel,
             match_score: matchScore,
-            matched_skills: matched.slice(0, 20), // Top 20
+            matched_skills: matched.slice(0, 20),
             missing_skills: missing,
             resume_strengths: strengths,
             resume_improvements: improvements,

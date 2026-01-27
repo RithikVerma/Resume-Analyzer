@@ -6,9 +6,6 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const pdfParse = require('pdf-parse');
 
-/**
- * Extract text from PDF buffer using pdf-parse
- */
 async function parsePDF(filePath) {
     try {
         const buffer = await fs.readFile(filePath);
@@ -20,9 +17,6 @@ async function parsePDF(filePath) {
     }
 }
 
-/**
- * Extract text from DOC/DOCX buffer
- */
 async function parseDOCX(filePath) {
     try {
         const buffer = await fs.readFile(filePath);
@@ -34,15 +28,10 @@ async function parseDOCX(filePath) {
     }
 }
 
-/**
- * Parse file based on extension
- */
 export async function parseFile(file) {
     const filePath = file.filepath || file.path;
     const filename = file.originalFilename || file.name;
     const ext = path.extname(filename).toLowerCase();
-
-    console.log('Parsing file:', filename, 'Extension:', ext, 'Path:', filePath);
 
     try {
         switch (ext) {
@@ -55,7 +44,6 @@ export async function parseFile(file) {
                 throw new Error('Unsupported file type: ' + ext);
         }
     } finally {
-        // Clean up temp file
         try {
             await fs.unlink(filePath);
         } catch (unlinkError) {

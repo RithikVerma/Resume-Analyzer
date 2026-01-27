@@ -19,7 +19,7 @@ export default function InputForm({ onAnalyze }) {
 
     const validateAndSetFile = (file) => {
         const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-        const maxSize = 5 * 1024 * 1024; // 5MB
+        const maxSize = 5 * 1024 * 1024;
 
         if (!allowedTypes.includes(file.type)) {
             alert('Invalid file type. Please upload a PDF, DOC, or DOCX file.');
@@ -79,7 +79,6 @@ export default function InputForm({ onAnalyze }) {
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Resume Upload */}
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
@@ -146,7 +145,6 @@ export default function InputForm({ onAnalyze }) {
                     </CardContent>
                 </Card>
 
-                {/* Job Description Input */}
                 <Card>
                     <CardHeader>
                         <CardTitle>Job Description</CardTitle>
@@ -168,7 +166,6 @@ export default function InputForm({ onAnalyze }) {
                 </Card>
             </div>
 
-            {/* Submit Button */}
             <div className="flex justify-center">
                 <Button type="submit" size="lg" className="w-full sm:w-auto">
                     Analyze Resume
