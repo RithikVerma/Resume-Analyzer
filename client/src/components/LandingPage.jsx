@@ -109,7 +109,7 @@ export default function LandingPage({ onGetStarted }) {
                     {features.map((feature, index) => {
                         const Icon = feature.icon;
                         return (
-                            <Card key={index} className="border-0 shadow-elevated hover:shadow-floating hover:-translate-y-2 transition-smooth">
+                            <Card key={index} className="border-0 shadow-elevated transition-smooth">
                                 <CardHeader className="p-6">
                                     <div className="flex items-start gap-4">
                                         <div className="p-3 rounded-xl bg-blue-50 shadow-soft">
