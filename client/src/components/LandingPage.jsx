@@ -134,52 +134,94 @@ export default function LandingPage({ onGetStarted }) {
 
 
             {/* How It Works Section */}
-            <section id="how-it-works" className="space-y-8 py-16 border-t border-slate-200">
+            <section id="how-it-works" className="space-y-12 py-16 border-t border-slate-200">
                 <div className="text-center space-y-3">
-                    <h2 className="text-3xl font-semibold text-slate-900">
+                    <h2 className="text-3xl md:text-4xl font-semibold text-slate-900">
                         How It Works
                     </h2>
-                    <p className="text-slate-600 max-w-xl mx-auto">
-                        Simple, fast, and effective
+                    <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                        Get your resume analyzed in three simple steps
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <div className="text-center space-y-4">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold text-xl shadow-lg">
-                            1
-                        </div>
-                        <h3 className="text-xl font-semibold text-slate-900">
-                            Upload Resume
-                        </h3>
-                        <p className="text-base text-slate-600 leading-relaxed">
-                            Upload your resume in PDF, DOC, or DOCX format
-                        </p>
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                    {/* Connecting line for desktop */}
+                    <div className="hidden md:block absolute top-12 left-[16.666%] right-[16.666%] h-0.5 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 -z-10"></div>
 
-                    <div className="text-center space-y-4">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold text-xl shadow-lg">
-                            2
-                        </div>
-                        <h3 className="text-xl font-semibold text-slate-900">
-                            Add Job Description
-                        </h3>
-                        <p className="text-base text-slate-600 leading-relaxed">
-                            Paste the job description you're targeting
-                        </p>
-                    </div>
+                    {/* Step 1 */}
+                    <Card className="relative border-0 shadow-elevated">
+                        <CardContent className="p-8 space-y-6">
+                            <div className="flex flex-col items-center text-center space-y-4">
+                                <div className="relative">
+                                    <div className="absolute inset-0 bg-blue-500 rounded-2xl blur-xl opacity-20"></div>
+                                    <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg">
+                                        <FileText className="h-9 w-9 text-white" />
+                                    </div>
+                                </div>
+                                <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
+                                    01
+                                </div>
+                                <div className="space-y-2">
+                                    <h3 className="text-xl font-semibold text-slate-900">
+                                        Upload Resume
+                                    </h3>
+                                    <p className="text-base text-slate-600 leading-relaxed">
+                                        Upload your resume in PDF, DOC, or DOCX format. Our system supports files up to 5MB.
+                                    </p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
 
-                    <div className="text-center space-y-4">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold text-xl shadow-lg">
-                            3
-                        </div>
-                        <h3 className="text-xl font-semibold text-slate-900">
-                            Get Insights
-                        </h3>
-                        <p className="text-base text-slate-600 leading-relaxed">
-                            Receive detailed analysis and actionable recommendations
-                        </p>
-                    </div>
+                    {/* Step 2 */}
+                    <Card className="relative border-0 shadow-elevated">
+                        <CardContent className="p-8 space-y-6">
+                            <div className="flex flex-col items-center text-center space-y-4">
+                                <div className="relative">
+                                    <div className="absolute inset-0 bg-blue-500 rounded-2xl blur-xl opacity-20"></div>
+                                    <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg">
+                                        <Briefcase className="h-9 w-9 text-white" />
+                                    </div>
+                                </div>
+                                <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
+                                    02
+                                </div>
+                                <div className="space-y-2">
+                                    <h3 className="text-xl font-semibold text-slate-900">
+                                        Add Job Description
+                                    </h3>
+                                    <p className="text-base text-slate-600 leading-relaxed">
+                                        Paste the complete job description you're targeting for accurate matching.
+                                    </p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Step 3 */}
+                    <Card className="relative border-0 shadow-elevated">
+                        <CardContent className="p-8 space-y-6">
+                            <div className="flex flex-col items-center text-center space-y-4">
+                                <div className="relative">
+                                    <div className="absolute inset-0 bg-blue-500 rounded-2xl blur-xl opacity-20"></div>
+                                    <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg">
+                                        <Award className="h-9 w-9 text-white" />
+                                    </div>
+                                </div>
+                                <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
+                                    03
+                                </div>
+                                <div className="space-y-2">
+                                    <h3 className="text-xl font-semibold text-slate-900">
+                                        Get Insights
+                                    </h3>
+                                    <p className="text-base text-slate-600 leading-relaxed">
+                                        Receive detailed AI-powered analysis with actionable recommendations in seconds.
+                                    </p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </section>
 
